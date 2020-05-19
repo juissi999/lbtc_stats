@@ -6,7 +6,7 @@ const getRecentTrades = () => {
 }
 
 const getSell = () => {
-  const request = axios.get('/api/sales')
+  const request = axios.get('/api/sell')
   return request.then((response) => response.data)
 }
 
