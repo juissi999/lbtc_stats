@@ -1,18 +1,28 @@
 <template>
-  <div>{{ helloworld }}</div>
+  <div>{{ recent }}</div>
 </template>
 
 <script>
+import lbtcApi from './apiGetter'
+
 export default {
   name: 'App',
   components: {},
-  mounted() {},
+  mounted() {
+    this.getRecent()
+  },
   data() {
     return {
-      helloworld: 'hello world'
+      recent: 'hello_world'
     }
   },
-  methods: {}
+  methods: {
+    getRecent() {
+      lbtcApi.getRecentTrades().then((data) => {
+        this.recent = data
+      })
+    }
+  }
 }
 </script>
 
