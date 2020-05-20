@@ -1,21 +1,28 @@
 <template>
   <div>
     <div>
-      Mean price of last 500 transactions:
-      {{ Math.floor(recent * 100) / 100 }} eur
+      <div>
+        Mean price of last 500 transactions:
+        {{ Math.floor(recent * 100) / 100 }} eur
+      </div>
+      <div>Smallest trade [BTC]: {{ smallest }}</div>
+      <div>Biggest trade [BTC]: {{ biggest }}</div>
+      <div>Data updated: {{ timestamp }}</div>
     </div>
-    <div>Smallest trade [BTC]: {{ smallest }}</div>
-    <div>Biggest trade [BTC]: {{ biggest }}</div>
-    <div>[aquired {{ timestamp }}]</div>
+    Sell-ads:
+    <TransactionList :tlist="sells" />
+    Buy-ads:
+    <TransactionList :tlist="buys" />
   </div>
 </template>
 
 <script>
+import TransactionList from './components/TransactionList.vue'
 import lbtcApi from './apiGetter'
 
 export default {
   name: 'App',
-  components: {},
+  components: { TransactionList },
   mounted() {
     this.getStatistics()
     // setInterval(this.getStatistics, 15000)
@@ -25,7 +32,9 @@ export default {
       recent: '',
       timestamp: 'none',
       smallest: '',
-      biggest: ''
+      biggest: '',
+      sells: [],
+      buys: []
     }
   },
   methods: {
@@ -51,11 +60,12 @@ export default {
         this.timestamp = new Date()
       })
 
+      const TRANSACTION_COUNT = 5
       lbtcApi.getSell().then((data) => {
-        console.log(data.data.ad_list)
+        this.sells = data.data.ad_list.filter((d, i) => i < TRANSACTION_COUNT)
       })
       lbtcApi.getBuy().then((data) => {
-        console.log(data.data.ad_list)
+        this.buys = data.data.ad_list.filter((d, i) => i < TRANSACTION_COUNT)
       })
     }
   }
