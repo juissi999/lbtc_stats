@@ -1,11 +1,11 @@
 <template>
   <div>
     <div>
-      Mean price of last 500 transactions is
+      Mean price of last 500 transactions:
       {{ Math.floor(recent * 100) / 100 }} eur
     </div>
-    <div>Smallest trade [BTC]:{{ smallest }}</div>
-    <div>Biggest trade [BTC]:{{ biggest }}</div>
+    <div>Smallest trade [BTC]: {{ smallest }}</div>
+    <div>Biggest trade [BTC]: {{ biggest }}</div>
     <div>[aquired {{ timestamp }}]</div>
   </div>
 </template>
@@ -18,6 +18,7 @@ export default {
   components: {},
   mounted() {
     this.getStatistics()
+    // setInterval(this.getStatistics, 15000)
   },
   data() {
     return {
@@ -29,7 +30,7 @@ export default {
   },
   methods: {
     getStatistics() {
-      // get 500 latest
+      // get 500 latest trades
       lbtcApi.getRecentTrades().then((data) => {
         // calculate average price from array
         const averagePrice =
@@ -48,6 +49,13 @@ export default {
 
         this.recent = averagePrice
         this.timestamp = new Date()
+      })
+
+      lbtcApi.getSell().then((data) => {
+        console.log(data.data.ad_list)
+      })
+      lbtcApi.getBuy().then((data) => {
+        console.log(data.data.ad_list)
       })
     }
   }
