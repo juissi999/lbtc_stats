@@ -1,18 +1,23 @@
 <template>
   <div>
-    <div>
-      <div>
-        Mean price of last 500 transactions:
-        {{ Math.floor(recent * 100) / 100 }} eur
-      </div>
-      <div>Smallest trade [BTC]: {{ smallest }}</div>
-      <div>Biggest trade [BTC]: {{ biggest }}</div>
-      <div>Data updated: {{ timestamp }}</div>
-    </div>
-    Sell-ads:
-    <TransactionList :tlist="sells" />
-    Buy-ads:
-    <TransactionList :tlist="buys" />
+    <p>
+      Mean price of last 500 transactions:
+      {{ Math.floor(recent * 100) / 100 }} EUR
+    </p>
+    <p>
+      Smallest trade:
+      {{ smallest }} BTC
+    </p>
+    <p>Biggest trade [BTC]: {{ biggest }}</p>
+    <p>Data updated: {{ timestamp }}</p>
+    <p>
+      Sell-ads:
+      <TransactionList :tlist="sells" />
+    </p>
+    <p>
+      Buy-ads:
+      <TransactionList :tlist="buys" />
+    </p>
   </div>
 </template>
 
@@ -72,4 +77,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+body {
+  font-family: arial;
+}
+</style>
