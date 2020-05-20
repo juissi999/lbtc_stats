@@ -1,9 +1,8 @@
-const lbtcApi = require('../lbtcApiGetter')
+const axios = require('axios')
+const baseUrl = 'https://localbitcoins.com'
 
-exports.getTrades = (request, response) => {
-  lbtcApi.getRecent().then((apiResponse) => response.json(apiResponse))
-}
-
-exports.getSell = (request, response) => {
-  lbtcApi.getSell().then((apiResponse) => response.json(apiResponse))
+exports.proxy = (request, response) => {
+  // forward the requests url to baseUrl/...
+  const promise = axios.get(`${baseUrl}/${request.url}`)
+  promise.then((resp) => response.json(resp.data))
 }
