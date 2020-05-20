@@ -65,13 +65,8 @@ export default {
         this.timestamp = new Date()
       })
 
-      const TRANSACTION_COUNT = 5
-      lbtcApi.getSell().then((data) => {
-        this.sells = data.data.ad_list.filter((d, i) => i < TRANSACTION_COUNT)
-      })
-      lbtcApi.getBuy().then((data) => {
-        this.buys = data.data.ad_list.filter((d, i) => i < TRANSACTION_COUNT)
-      })
+      lbtcApi.getSell().then((data) => (this.sells = data.data.ad_list))
+      lbtcApi.getBuy().then((data) => (this.buys = data.data.ad_list))
     }
   }
 }

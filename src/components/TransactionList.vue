@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-bind:key="i" v-for="(li, i) in tlist">
+    <div
+      v-bind:key="i"
+      v-for="(li, i) in tlist.filter((d, i) => i < TRANSACTION_COUNT)"
+    >
       <a :href="li.actions.public_view">
         price: {{ li.data.temp_price }} limits: {{ li.data.min_amount }} ..
         {{ li.data.max_amount }} | {{ li.data.profile.name }}
@@ -12,7 +15,10 @@
 <script>
 export default {
   name: 'TransactionList',
-  props: ['tlist']
+  props: ['tlist'],
+  data: () => {
+    return { TRANSACTION_COUNT: 10 }
+  }
 }
 </script>
 
