@@ -1,5 +1,8 @@
 <template>
   <div>
+    <h4>
+      Localbitcoins.com stats, updated every {{ updateInterval / 1000 }} seconds
+    </h4>
     <p>
       Mean price of last 500 transactions:
       {{ Math.floor(recent * 100) / 100 }} EUR
@@ -33,10 +36,11 @@ export default {
   components: { AdvertisementList },
   mounted () {
     this.getStatistics()
-    // setInterval(this.getStatistics, 15000)
+    setInterval(this.getStatistics, this.updateInterval)
   },
-  data() {
+  data () {
     return {
+      updateInterval: 15000,
       recent: '',
       timestamp: 'none',
       smallest: '',
@@ -46,9 +50,9 @@ export default {
     }
   },
   methods: {
-    getStatistics() {
+    getStatistics () {
       // get 500 latest trades
-      lbtcApi.getRecentTrades().then((data) => {
+      lbtcApi.getRecentTrades().then(data => {
         // calculate average price from array
         const averagePrice =
           data.reduce(
@@ -58,7 +62,7 @@ export default {
           ) / data.length
 
         // filter data to get only float prices
-        const amounts = data.map((d) => parseFloat(d.amount))
+        const amounts = data.map(d => parseFloat(d.amount))
 
         // get smallest and biggest trades
         this.smallest = amounts.reduce((acc, curVal) => Math.min(acc, curVal))
