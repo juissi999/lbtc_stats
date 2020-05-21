@@ -5,7 +5,7 @@
       v-for="li in tlist.filter((d, i) => i < transactionCount)"
     >
       <a :href="li.actions.public_view">
-        price: {{ li.data.temp_price }} EUR/BTC limits:
+        price: {{ li.data.temp_price }} EUR/BTC | limits:
         {{ li.data.min_amount }} .. {{ li.data.max_amount }} |
         {{ li.data.profile.name }}
       </a>
