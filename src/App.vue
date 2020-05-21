@@ -1,25 +1,24 @@
 <template>
   <div>
     <h4>
-      Localbitcoins.com stats, updated every {{ updateInterval / 1000 }} seconds
+      Localbitcoins.com stats, polling every
+      {{ UPDATE_INTERVAL / 1000 }} seconds, showing
+      {{ TRANSACTION_COUNT }} latest ads
     </h4>
+    <h5>Stats (updated {{ statsUpdate }})</h5>
     <p>
       Mean price of last 500 transactions:
-      {{ Math.floor(recent * 100) / 100 }} EUR
+      {{ Math.floor(recent * 100) / 100 }} EUR/BTC
     </p>
+    <p>Smallest trade: {{ smallest }} BTC</p>
+    <p>Biggest trade: {{ biggest }} BTC</p>
+    <h5>Buy bitcoins ads: (updated {{ this.buyUpdate }})</h5>
     <p>
-      Smallest trade:
-      {{ smallest }} BTC
+      <AdvertisementList :tlist="buys" :transactionCount="TRANSACTION_COUNT" />
     </p>
-    <p>Biggest trade [BTC]: {{ biggest }}</p>
-    <p>Data updated: {{ timestamp }}</p>
+    <h5>Sell bitcoins ads: (updated {{ this.sellUpdate }})</h5>
     <p>
-      Buy bitcoins:
-      <AdvertisementList :tlist="buys" />
-    </p>
-    <p>
-      Sell bitcoins:
-      <AdvertisementList :tlist="sells" />
+      <AdvertisementList :tlist="sells" :transactionCount="TRANSACTION_COUNT" />
     </p>
   </div>
 </template>
@@ -36,13 +35,16 @@ export default {
   components: { AdvertisementList },
   mounted () {
     this.getStatistics()
-    setInterval(this.getStatistics, this.updateInterval)
+    setInterval(this.getStatistics, this.UPDATE_INTERVAL)
   },
   data () {
     return {
-      updateInterval: 15000,
+      UPDATE_INTERVAL: 15000,
+      TRANSACTION_COUNT: 5,
       recent: '',
-      timestamp: 'none',
+      statsUpdate: '',
+      sellUpdate: '',
+      buyUpdate: '',
       smallest: '',
       biggest: '',
       sells: [],
@@ -69,15 +71,18 @@ export default {
         this.biggest = amounts.reduce((acc, curVal) => Math.max(acc, curVal))
 
         this.recent = averagePrice
-        this.timestamp = new Date()
+        this.statsUpdate = new Date().toLocaleString()
       })
 
-      lbtcApi
-        .getSell()
-        .then(data => (this.sells = data.data.ad_list.sort(ascendingSorter)))
-      lbtcApi
-        .getBuy()
-        .then(data => (this.buys = data.data.ad_list.sort(descendingSorter)))
+      lbtcApi.getSell().then(data => {
+        this.sells = data.data.ad_list.sort(ascendingSorter)
+        this.sellUpdate = new Date().toLocaleString()
+      })
+
+      lbtcApi.getBuy().then(data => {
+        this.buys = data.data.ad_list.sort(descendingSorter)
+        this.buyUpdate = new Date().toLocaleString()
+      })
     }
   }
 }
