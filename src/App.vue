@@ -6,13 +6,8 @@
       {{ TRANSACTION_COUNT }} latest ads
     </h4>
     <h5>Stats (updated {{ statsUpdate }})</h5>
-    <p>
-      Mean price of last 500 transactions:
-      {{ Math.floor(avgPrice * 100) / 100 }} EUR/BTC
-    </p>
-    <p>Smallest trade: {{ smallest }} BTC</p>
-    <p>Biggest trade: {{ biggest }} BTC</p>
-    <h5>Buy bitcoins ads: (updated {{ this.buyUpdate }})</h5>
+    <Stats :recent="recentTrades" />
+    <h5>Buy bitcoins ads: (updated {{ this.sellUpdate }})</h5>
     <p>
       <AdvertisementList :tlist="buys" :transactionCount="TRANSACTION_COUNT" />
     </p>
@@ -25,6 +20,7 @@
 
 <script>
 import AdvertisementList from './components/AdvertisementList.vue'
+import Stats from './components/Stats.vue'
 import lbtcApi from './apiGetter'
 
 const ascendingSorter = (a, b) => a.data.temp_price - b.data.temp_price
@@ -32,7 +28,7 @@ const descendingSorter = (a, b) => b.data.temp_price - a.data.temp_price
 
 export default {
   name: 'App',
-  components: { AdvertisementList },
+  components: { Stats, AdvertisementList },
   mounted () {
     this.getStatistics()
     setInterval(this.getStatistics, this.UPDATE_INTERVAL)
@@ -41,12 +37,10 @@ export default {
     return {
       UPDATE_INTERVAL: 15000,
       TRANSACTION_COUNT: 5,
-      avgPrice: '',
       statsUpdate: '',
       sellUpdate: '',
       buyUpdate: '',
-      smallest: '',
-      biggest: '',
+      recentTrades: [],
       sells: [],
       buys: []
     }
@@ -59,22 +53,7 @@ export default {
 
       // get 500 latest trades
       lbtcApi.getRecentTrades().then(data => {
-        // calculate average price from array
-        const averagePrice =
-          data.reduce(
-            (accumulator, currentVal) =>
-              accumulator + parseFloat(currentVal.price),
-            0
-          ) / data.length
-        this.avgPrice = averagePrice
-
-        // filter data to get only float prices
-        const amounts = data.map(d => parseFloat(d.amount))
-
-        // get smallest and biggest trades
-        this.smallest = amounts.reduce((acc, curVal) => Math.min(acc, curVal))
-        this.biggest = amounts.reduce((acc, curVal) => Math.max(acc, curVal))
-
+        this.recentTrades = data
         this.statsUpdate = new Date().toLocaleString()
       })
 
