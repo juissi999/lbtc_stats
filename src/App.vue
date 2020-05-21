@@ -8,7 +8,7 @@
     <h5>Stats (updated {{ statsUpdate }})</h5>
     <p>
       Mean price of last 500 transactions:
-      {{ Math.floor(recent * 100) / 100 }} EUR/BTC
+      {{ Math.floor(avgPrice * 100) / 100 }} EUR/BTC
     </p>
     <p>Smallest trade: {{ smallest }} BTC</p>
     <p>Biggest trade: {{ biggest }} BTC</p>
@@ -41,7 +41,7 @@ export default {
     return {
       UPDATE_INTERVAL: 15000,
       TRANSACTION_COUNT: 5,
-      recent: '',
+      avgPrice: '',
       statsUpdate: '',
       sellUpdate: '',
       buyUpdate: '',
@@ -53,6 +53,10 @@ export default {
   },
   methods: {
     getStatistics () {
+      // a function that calls 3 REST apis and places the results to
+      // data()-variables which are bind to template and thus cause a
+      // browser DOM update
+
       // get 500 latest trades
       lbtcApi.getRecentTrades().then(data => {
         // calculate average price from array
@@ -62,6 +66,7 @@ export default {
               accumulator + parseFloat(currentVal.price),
             0
           ) / data.length
+        this.avgPrice = averagePrice
 
         // filter data to get only float prices
         const amounts = data.map(d => parseFloat(d.amount))
@@ -70,17 +75,20 @@ export default {
         this.smallest = amounts.reduce((acc, curVal) => Math.min(acc, curVal))
         this.biggest = amounts.reduce((acc, curVal) => Math.max(acc, curVal))
 
-        this.recent = averagePrice
         this.statsUpdate = new Date().toLocaleString()
       })
 
+      // get sell advertisements
       lbtcApi.getSell().then(data => {
-        this.sells = data.data.ad_list.sort(ascendingSorter)
+        // sort & place to variable
+        this.sells = data.data.ad_list.sort(descendingSorter)
         this.sellUpdate = new Date().toLocaleString()
       })
 
+      // get buy advertisements
       lbtcApi.getBuy().then(data => {
-        this.buys = data.data.ad_list.sort(descendingSorter)
+        // sort & place to variable
+        this.buys = data.data.ad_list.sort(ascendingSorter)
         this.buyUpdate = new Date().toLocaleString()
       })
     }
