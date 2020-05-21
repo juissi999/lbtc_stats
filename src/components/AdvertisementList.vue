@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'TransactionList',
+  name: 'AdvertisementList',
   props: ['tlist'],
   data: () => {
     return { TRANSACTION_COUNT: 10 }

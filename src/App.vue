@@ -11,24 +11,24 @@
     <p>Biggest trade [BTC]: {{ biggest }}</p>
     <p>Data updated: {{ timestamp }}</p>
     <p>
-      Sell-ads:
-      <TransactionList :tlist="sells" />
+      Buy bitcoins:
+      <AdvertisementList :tlist="buys" />
     </p>
     <p>
-      Buy-ads:
-      <TransactionList :tlist="buys" />
+      Sell bitcoins:
+      <AdvertisementList :tlist="sells" />
     </p>
   </div>
 </template>
 
 <script>
-import TransactionList from './components/TransactionList.vue'
+import AdvertisementList from './components/AdvertisementList.vue'
 import lbtcApi from './apiGetter'
 
 export default {
   name: 'App',
-  components: { TransactionList },
-  mounted() {
+  components: { AdvertisementList },
+  mounted () {
     this.getStatistics()
     // setInterval(this.getStatistics, 15000)
   },
