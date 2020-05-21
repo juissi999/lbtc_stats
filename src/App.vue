@@ -25,6 +25,9 @@
 import AdvertisementList from './components/AdvertisementList.vue'
 import lbtcApi from './apiGetter'
 
+const ascendingSorter = (a, b) => a.data.temp_price - b.data.temp_price
+const descendingSorter = (a, b) => b.data.temp_price - a.data.temp_price
+
 export default {
   name: 'App',
   components: { AdvertisementList },
@@ -65,8 +68,12 @@ export default {
         this.timestamp = new Date()
       })
 
-      lbtcApi.getSell().then((data) => (this.sells = data.data.ad_list))
-      lbtcApi.getBuy().then((data) => (this.buys = data.data.ad_list))
+      lbtcApi
+        .getSell()
+        .then(data => (this.sells = data.data.ad_list.sort(ascendingSorter)))
+      lbtcApi
+        .getBuy()
+        .then(data => (this.buys = data.data.ad_list.sort(descendingSorter)))
     }
   }
 }
