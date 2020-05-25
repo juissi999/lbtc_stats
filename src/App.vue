@@ -8,7 +8,6 @@
     <h5>Stats (updated {{ statsUpdate }})</h5>
     <p v-if="!errorTrades">
       <Stats :recent="recentTrades" />
-      <Transfer :transferObj="latestTransfer" />
     </p>
     <p v-else>
       Data could not be retrieved
@@ -33,7 +32,6 @@
 <script>
 import AdvertisementList from './components/AdvertisementList.vue'
 import Stats from './components/Stats.vue'
-import Transfer from './components/Transfer.vue'
 import lbtcApi from './apiGetter'
 
 const ascendingSorter = (a, b) => a.data.temp_price - b.data.temp_price
@@ -41,7 +39,7 @@ const descendingSorter = (a, b) => b.data.temp_price - a.data.temp_price
 
 export default {
   name: 'App',
-  components: { Stats, AdvertisementList, Transfer },
+  components: { Stats, AdvertisementList },
   mounted () {
     this.getStatistics()
     setInterval(this.getStatistics, this.UPDATE_INTERVAL)
@@ -98,19 +96,6 @@ export default {
           this.errorBuys = false
         })
         .catch(err => (this.errorBuys = true))
-    }
-  },
-  computed: {
-    latestTransfer: function () {
-      if (this.recentTrades.length > 1) {
-        // if the data has some values
-        const sortedTrades = this.recentTrades.sort(
-          (a, b) => Number(a.date) - Number(b.date)
-        )
-        return sortedTrades[sortedTrades.length - 1]
-      } else {
-        return null
-      }
     }
   }
 }

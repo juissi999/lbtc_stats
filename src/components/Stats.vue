@@ -6,13 +6,17 @@
     </p>
     <p>Smallest trade: {{ smallest }} BTC</p>
     <p>Biggest trade: {{ biggest }} BTC</p>
+    <Transfer :transferObj="latestTransfer" />
   </div>
 </template>
 
 <script>
+import Transfer from '../components/Transfer.vue'
+
 export default {
   name: 'Stats',
   props: ['recent'],
+  components: { Transfer },
   computed: {
     // here define "views" for our data (recent prop)
 
@@ -40,6 +44,18 @@ export default {
     // get biggest trades
     biggest: function () {
       return this.amounts.reduce((acc, curVal) => Math.max(acc, curVal))
+    },
+
+    latestTransfer: function () {
+      if (this.recent.length > 1) {
+        // if the data has some values
+        const sortedTrades = this.recent.sort(
+          (a, b) => Number(a.date) - Number(b.date)
+        )
+        return sortedTrades[sortedTrades.length - 1]
+      } else {
+        return null
+      }
     }
   }
 }
