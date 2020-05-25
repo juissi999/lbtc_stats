@@ -6,18 +6,26 @@
       {{ TRANSACTION_COUNT }} latest ads
     </h4>
     <h5>Stats (updated {{ statsUpdate }})</h5>
-    <p v-if="!errorTrades"><Stats :recent="recentTrades" /></p>
-    <p v-else>Data could not be retrieved</p>
+    <p v-if="!errorTrades">
+      <Stats :recent="recentTrades" />
+    </p>
+    <p v-else>
+      Data could not be retrieved
+    </p>
     <h5>Buy bitcoins ads (updated {{ this.sellUpdate }})</h5>
     <p v-if="!errorBuys">
       <AdvertisementList :tlist="buys" :transactionCount="TRANSACTION_COUNT" />
     </p>
-    <p v-else>Data could not be retrieved</p>
+    <p v-else>
+      Data could not be retrieved
+    </p>
     <h5>Sell bitcoins ads (updated {{ this.sellUpdate }})</h5>
     <p v-if="!errorSells">
-    <AdvertisementList :tlist="sells" :transactionCount="TRANSACTION_COUNT" />
+      <AdvertisementList :tlist="sells" :transactionCount="TRANSACTION_COUNT" />
     </p>
-    <p v-else>Data could not be retrieved</p>
+    <p v-else>
+        Data could not be retrieved
+    </p>
   </div>
 </template>
 
