@@ -7,7 +7,8 @@ exports.proxy = (request, response) => {
   promise.then((resp) => response.json(resp.data))
     .catch((err) => {
       if (err.response) {
-        response.status(err.response.status).end(err.response.data)
+        // proxy the same error code received from server
+        response.status(err.response.status).end()
       } else {
         response.status(408).end()
       }
