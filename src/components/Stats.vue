@@ -17,25 +17,28 @@ export default {
     // here define "views" for our data (recent prop)
 
     // calculate average price from array
-    averagePrice: function() {
-      return this.recent.reduce(
-        (accumulator, currentVal) => accumulator + parseFloat(currentVal.price),
-        0
-      ) / this.recent.length
+    averagePrice: function () {
+      return (
+        this.recent.reduce(
+          (accumulator, currentVal) =>
+            accumulator + parseFloat(currentVal.price),
+          0
+        ) / this.recent.length
+      )
     },
 
     // filter data to get only float prices
-    amounts: function() {
+    amounts: function () {
       return this.recent.map(d => parseFloat(d.amount))
     },
 
     // get smallest trades
-    smallest: function() {
+    smallest: function () {
       return this.amounts.reduce((acc, curVal) => Math.min(acc, curVal))
     },
 
     // get biggest trades
-    biggest: function() {
+    biggest: function () {
       return this.amounts.reduce((acc, curVal) => Math.max(acc, curVal))
     }
   }

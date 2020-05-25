@@ -24,7 +24,7 @@
       <AdvertisementList :tlist="sells" :transactionCount="TRANSACTION_COUNT" />
     </p>
     <p v-else>
-        Data could not be retrieved
+      Data could not be retrieved
     </p>
   </div>
 </template>
@@ -54,7 +54,7 @@ export default {
       recentTrades: [],
       sells: [],
       buys: [],
-      errorTrades:false,
+      errorTrades: false,
       errorBuys: false,
       errorSells: false
     }
@@ -66,33 +66,36 @@ export default {
       // browser DOM update
 
       // get 500 latest trades
-      lbtcApi.getRecentTrades()
+      lbtcApi
+        .getRecentTrades()
         .then(data => {
           this.recentTrades = data
           this.statsUpdate = new Date().toLocaleString()
           this.errorTrades = false
         })
-        .catch(err=>this.errorTrades = true)
+        .catch(err => (this.errorTrades = true))
 
       // get sell advertisements
-      lbtcApi.getSell()
+      lbtcApi
+        .getSell()
         .then(data => {
           // sort & place to variable
           this.sells = data.data.ad_list.sort(descendingSorter)
           this.sellUpdate = new Date().toLocaleString()
           this.errorSells = false
         })
-        .catch(err=>this.errorSells = true)
+        .catch(err => (this.errorSells = true))
 
       // get buy advertisements
-      lbtcApi.getBuy()
+      lbtcApi
+        .getBuy()
         .then(data => {
           // sort & place to variable
           this.buys = data.data.ad_list.sort(ascendingSorter)
           this.buyUpdate = new Date().toLocaleString()
           this.errorBuys = false
         })
-        .catch(err=>this.errorBuys = true)
+        .catch(err => (this.errorBuys = true))
     }
   }
 }
