@@ -7,17 +7,19 @@
     <p>Smallest trade: {{ smallest }} BTC</p>
     <p>Biggest trade: {{ biggest }} BTC</p>
     <Transfer :transferObj="latestTransfer" />
+    <PriceChart :trades="sortedTrades" />
   </div>
 </template>
 
 <script>
 import Transfer from '../components/Transfer.vue'
+import PriceChart from '../components/PriceChart.vue'
 import { median } from 'filters'
 
 export default {
   name: 'Stats',
   props: ['recent'],
-  components: { Transfer },
+  components: { Transfer, PriceChart },
   computed: {
     // here define "views" for our data (recent prop)
 
