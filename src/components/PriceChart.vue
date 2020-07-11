@@ -44,7 +44,13 @@ export default {
         animation: {
           duration: 0
         },
-        elements: { point: { radius: 0 } },
+        elements: {
+          point: {
+            radius: 0,
+            hitRadius: 7,
+            hoverRadius: 7
+          }
+        },
         title: {
           display: true,
           text: 'Ticks on timeline'
