@@ -7,7 +7,10 @@
     <p>Smallest trade: {{ smallest }} BTC</p>
     <p>Biggest trade: {{ biggest }} BTC</p>
     <Transfer :transferObj="latestTransfer" />
-    <PriceChart :trades="sortedTrades" />
+    <PriceChart
+      :trades="sortedTrades"
+      :medianFilteredTrades="medianSortedTrades"
+    />
   </div>
 </template>
 

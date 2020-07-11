@@ -3,10 +3,18 @@ import { Line } from 'vue-chartjs'
 
 export default {
   extends: Line,
-  props: ['trades'],
+  props: ['trades', 'medianFilteredTrades'],
   data: function () {
     return {
       datasets: [
+        {
+          label: 'Median filtered prices',
+          borderColor: '#3cba9f',
+          lineTension: 0,
+          data: this.trades.map((el, i) => {
+            return { t: new Date(el.date), y: this.medianFilteredTrades[i] }
+          })
+        },
         {
           label: 'Prices',
           borderColor: '#8e5ea2',
