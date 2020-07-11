@@ -8,19 +8,23 @@ export default {
     return {
       datasets: [
         {
-          label: 'Median filtered (winlen:' + this.medianFilterLen + ')',
+          label: 'Trade price',
+          fill: false,
+          order: 1,
+          //borderColor: '#ADD8E6',
+          borderColor: '#D8BFD8',
+          lineTension: 0,
+          data: this.trades.map(el => {
+            return { t: new Date(el.date), y: Number(el.price) }
+          })
+        },
+        {
+          label: 'Median trade price (winlen:' + this.medianFilterLen + ')',
+          fill: false,
           borderColor: '#3cba9f',
           lineTension: 0,
           data: this.trades.map((el, i) => {
             return { t: new Date(el.date), y: this.medianFilteredTrades[i] }
-          })
-        },
-        {
-          label: 'Prices',
-          borderColor: '#8e5ea2',
-          lineTension: 0,
-          data: this.trades.map(el => {
-            return { t: new Date(el.date), y: Number(el.price) }
           })
         }
       ],
