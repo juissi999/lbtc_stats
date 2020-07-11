@@ -69,7 +69,11 @@ export default {
       lbtcApi
         .getRecentTrades()
         .then(data => {
-          this.recentTrades = data
+          // transfer all dates to js format
+          const transferredData = data.map(d => {
+            return { ...d, date: d.date * 1000 }
+          })
+          this.recentTrades = transferredData
           this.statsUpdate = new Date().toLocaleString()
           this.errorTrades = false
         })

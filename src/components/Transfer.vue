@@ -1,6 +1,6 @@
 <template>
   <div :v-if="transferObj !== null">
-    Latest Transfer {{ new Date(transferObj.date * 1000).toLocaleString() }},
+    Latest Transfer {{ new Date(transferObj.date).toLocaleString() }},
     {{ transferObj.amount }} BTC / {{ transferObj.price }} EUR
   </div>
 </template>
