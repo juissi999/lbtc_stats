@@ -12,6 +12,7 @@
 
 <script>
 import Transfer from '../components/Transfer.vue'
+import { median } from 'filters'
 
 export default {
   name: 'Stats',
@@ -48,6 +49,10 @@ export default {
 
     sortedTrades: function () {
       return this.recent.sort((a, b) => Number(a.date) - Number(b.date))
+    },
+
+    medianSortedTrades: function () {
+      return median(this.sortedTrades.map(t => Number(t.price)))
     },
 
     latestTransfer: function () {
