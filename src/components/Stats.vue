@@ -10,6 +10,7 @@
     <PriceChart
       :trades="sortedTrades"
       :medianFilteredTrades="medianSortedTrades"
+      :medianFilterLen="medianFilterWindow"
     />
   </div>
 </template>
@@ -23,6 +24,9 @@ export default {
   name: 'Stats',
   props: ['recent'],
   components: { Transfer, PriceChart },
+  data: function () {
+    return { medianFilterWindow: 7 }
+  },
   computed: {
     // here define "views" for our data (recent prop)
 
@@ -57,7 +61,10 @@ export default {
     },
 
     medianSortedTrades: function () {
-      return median(this.sortedTrades.map(t => Number(t.price)))
+      return median(
+        this.sortedTrades.map(t => Number(t.price)),
+        this.medianFilterWindow
+      )
     },
 
     latestTransfer: function () {
