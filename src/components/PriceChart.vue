@@ -46,7 +46,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.datasets[0].data)
     this.renderChart({ datasets: this.datasets }, this.options)
   }
 }
